@@ -1,4 +1,5 @@
 import 'package:asyncstate/widget/async_state_builder.dart';
+import 'package:barbershop/src/core/ui/barbershop_nav_global_key.dart';
 import 'package:barbershop/src/core/ui/barbershop_theme.dart';
 import 'package:barbershop/src/core/ui/widgets/barbershop_loader.dart';
 import 'package:barbershop/src/features/auth/login/login_page.dart';
@@ -16,6 +17,7 @@ class BarbershopApp extends StatelessWidget {
       return MaterialApp(
         theme: BarberShopTheme.themeData,
         title: 'Barbieri BarberShop',
+        navigatorKey: BarbershopNavGlobalKey.instance.navKey,
         navigatorObservers: [asyncNavigatorObserver], // nada mais é que uma abstração para loaders no nosso app
         routes: {
           '/': (_) => const SplashPage(),
