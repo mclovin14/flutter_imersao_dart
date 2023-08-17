@@ -12,3 +12,9 @@ sealed class ColorsConstants{
   static const red =  Color(0xffEB1212);
   static const ice =  Color(0xffE6E2E9);
 }
+
+sealed class ImageConstansts {
+  static const String backgroundChair = 'assets/images/background_image_chair.jpg';
+  static const String avatar = 'assets/images/avatar.png';
+  static const String logo = 'assets/images/imgLogo.png';
+}
