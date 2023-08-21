@@ -16,35 +16,39 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
+  final formKey = GlobalKey<FormState>();
+  final emailEC = TextEditingController();
+  final passwordEC = TextEditingController();
 
- final formKey = GlobalKey<FormState>();
- final emailEC= TextEditingController();
- final passwordEC = TextEditingController();
-
-@override
+  @override
   void dispose() {
     emailEC.dispose();
     passwordEC.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final LoginVm(:login) = ref.watch(loginVmProvider.notifier);
-    ref.listen(loginVmProvider, (_, state) { 
-      switch(state){
+    ref.listen(loginVmProvider, (_, state) {
+      switch (state) {
         case LoginState(status: LoginStateStatus.initial):
           break;
         case LoginState(status: LoginStateStatus.admLogin):
-          Navigator.of(context).pushNamedAndRemoveUntil('/home/adm', (route) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/home/adm', (route) => false);
           break;
         case LoginState(status: LoginStateStatus.employeeLogin):
-          Navigator.of(context).pushNamedAndRemoveUntil('/home/employee', (route) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil('/home/employee', (route) => false);
           break;
         case LoginState(status: LoginStateStatus.error, :final errorMessage?):
           Notifications.showError(errorMessage, context);
           break;
         case LoginState(status: LoginStateStatus.error):
-          Notifications.showError('Erro ao realizar login! Por favor, tente novamente mais tarde.', context);
+          Notifications.showError(
+              'Erro ao realizar login! Por favor, tente novamente mais tarde.',
+              context);
           break;
       }
     });
@@ -76,8 +80,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 height: 45,
                               ),
                               TextFormField(
-                                onTapOutside: (_)=> context.unfocus(),
-                                validator:  Validatorless.multiple([
+                                onTapOutside: (_) => context.unfocus(),
+                                validator: Validatorless.multiple([
                                   Validatorless.required('Email obrigatória!'),
                                   Validatorless.email('Email inválido!')
                                 ]),
@@ -89,17 +93,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                         FloatingLabelBehavior.never,
                                     labelStyle:
                                         TextStyle(color: ColorsConstants.black),
-                                    hintStyle:
-                                        TextStyle(color: ColorsConstants.black)),
+                                    hintStyle: TextStyle(
+                                        color: ColorsConstants.black)),
                               ),
                               const SizedBox(
                                 height: 24,
                               ),
                               TextFormField(
                                 onTapOutside: (_) => context.unfocus(),
-                                validator:  Validatorless.multiple([
+                                validator: Validatorless.multiple([
                                   Validatorless.required('Senha obrigatória!'),
-                                  Validatorless.min(6,'Digite ao menos 6 caracteres!')
+                                  Validatorless.min(
+                                      6, 'Digite ao menos 6 caracteres!')
                                 ]),
                                 obscureText: true,
                                 controller: passwordEC,
@@ -110,8 +115,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                         FloatingLabelBehavior.never,
                                     labelStyle:
                                         TextStyle(color: ColorsConstants.black),
-                                    hintStyle:
-                                        TextStyle(color: ColorsConstants.black)),
+                                    hintStyle: TextStyle(
+                                        color: ColorsConstants.black)),
                               ),
                               const SizedBox(
                                 height: 16,
@@ -120,36 +125,44 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Esqueceu a senha?',
-                                  style: TextStyle(color: ColorsConstants.brown, fontSize: 12),
+                                  style: TextStyle(
+                                      color: ColorsConstants.brown,
+                                      fontSize: 12),
                                 ),
                               ),
                               const SizedBox(
-                                 height: 24,
+                                height: 24,
                               ),
                               ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(56)
-                                ),
-                                onPressed: (){
-                                  switch(formKey.currentState?.validate()){
-                                    case(false || null):
-                                      Notifications.showError('Campos inválidos', context);
-                                      break;
-                                    case true:
-                                      login(emailEC.text, passwordEC.text);
-                                  }
-                                },
-                                 child: const Text('ACESSAR')),
+                                  style: ElevatedButton.styleFrom(
+                                      minimumSize: const Size.fromHeight(56)),
+                                  onPressed: () {
+                                    switch (formKey.currentState?.validate()) {
+                                      case (false || null):
+                                        Notifications.showError(
+                                            'Campos inválidos', context);
+                                        break;
+                                      case true:
+                                        login(emailEC.text, passwordEC.text);
+                                    }
+                                  },
+                                  child: const Text('ACESSAR')),
                             ],
                           ),
-                          const Align(
+                          Align(
                               alignment: Alignment.bottomCenter,
-                              child: Text(
-                                'Criar Conta',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      '/auth/register/user', (route) => false);
+                                }, //traz o poder do botão se mudar nada no seu componente filho
+                                child: const Text(
+                                  'Criar Conta',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ))
                         ],
                       ),
