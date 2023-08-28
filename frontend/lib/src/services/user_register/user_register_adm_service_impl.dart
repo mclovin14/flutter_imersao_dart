@@ -1,4 +1,3 @@
-import 'package:barbershop/src/core/exceptions/repository_exception.dart';
 import 'package:barbershop/src/core/exceptions/service_exception.dart';
 import 'package:barbershop/src/core/functionalProgramming/either.dart';
 import 'package:barbershop/src/core/functionalProgramming/nil.dart';
