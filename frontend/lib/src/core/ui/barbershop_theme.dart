@@ -34,5 +34,17 @@ sealed class BarberShopTheme {
               foregroundColor: ColorsConstants.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)))),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          side: const BorderSide(
+            color: ColorsConstants.brown,
+            width: 1
+          ),
+          foregroundColor: ColorsConstants.brown,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8)
+          )
+        )
+      ),
       fontFamily: FontConstants.fontFamily);
 }

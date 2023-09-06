@@ -11,4 +11,6 @@ abstract interface class UserRepository {
 
   Future<Either<RepositoryException, Nil>> registerAdmin(
     ({String name, String email, String password}) userData); // isso aqui é um novo padrão do dart, chamado de record. Usado para substitur as classes de DTO
+
+  Future<Either<RepositoryException,List<UserModel>>> getEmployees(int barbershopId);
 }
