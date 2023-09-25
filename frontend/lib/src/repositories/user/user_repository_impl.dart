@@ -82,7 +82,7 @@ class UserRepositoryImpl implements UserRepository {
       final List<UserModelEmployee> employees = data
           .map<UserModelEmployee>((e) => UserModelEmployee.fromMap(e))
           .toList();
-          return Success(employees);
+      return Success(employees);
     } on DioException catch (e, s) {
       log('Erro ao buscar colaboradores', error: e, stackTrace: s);
       return Failure(
@@ -90,6 +90,61 @@ class UserRepositoryImpl implements UserRepository {
     } on ArgumentError catch (e, s) {
       log('Invalid json', error: e, stackTrace: s);
       return Failure(RepositoryException(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<RepositoryException, Nil>> registerAdmAsEmployee(
+      ({List<String> workDays, List<int> workHours}) userData) async {
+    try {
+      var userModelResult = await getSession();
+
+      final int userId;
+      switch (userModelResult) {
+        case Success(value: UserModel(:var id)):
+          userId = id;
+        case Failure(:var exception):
+          return Failure(exception);
+      }
+      await restClient.auth.put('/users/$userId', data: {
+        'work_days': userData.workDays,
+        'work_hours': userData.workHours
+      });
+      return Success(nil);
+    } on DioException catch (e, s) {
+      log('Erro ao registrar usuário admin como colaborador !',
+          error: e, stackTrace: s);
+      return Failure(RepositoryException(
+          message: 'Erro ao registrar usuário admin como colaborador'));
+    }
+  }
+
+  @override
+  Future<Either<RepositoryException, Nil>> registerEmployee(
+      ({
+        int barbershopId,
+        String email,
+        String name,
+        String password,
+        List<String> workDays,
+        List<int> workHours
+      }) userData) async {
+    try {
+      await restClient.auth.post('/users', data: {
+        'name': userData.name,
+        'email': userData.email,
+        'password': userData.password,
+        'barbershop_id': userData.barbershopId,       
+        'profile': 'EMPLOYEE',
+        'work_days': userData.workDays,
+        'work_hours': userData.workHours
+      });
+      return Success(nil);
+    } on DioException catch (e, s) {
+      log('Erro ao registrar colaborador!',
+          error: e, stackTrace: s);
+      return Failure(RepositoryException(
+          message: 'Erro ao registrar colaborador'));
     }
   }
 }

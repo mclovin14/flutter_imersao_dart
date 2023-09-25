@@ -12,3 +12,5 @@ auth:
        method: get
     - /users:
        method: post
+    - /users:
+       method: put

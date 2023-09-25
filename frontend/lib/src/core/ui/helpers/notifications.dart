@@ -13,6 +13,6 @@ sealed class Notifications {
   }
 
   static void showSuccess(String message, BuildContext context) {
-    showTopSnackBar(Overlay.of(context), CustomSnackBar.info(message: message));
+    showTopSnackBar(Overlay.of(context), CustomSnackBar.success(message: message));
   }
 }
