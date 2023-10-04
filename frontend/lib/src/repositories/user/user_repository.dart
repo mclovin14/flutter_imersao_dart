@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:barbershop/src/core/exceptions/auth_exception.dart';
 import 'package:barbershop/src/core/functionalProgramming/either.dart';
